@@ -1,0 +1,51 @@
+import pygame
+import sys
+
+# Initialize Pygame
+pygame.init()
+
+# Constants
+WIDTH, HEIGHT = 800, 600
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+BG_COLOR = WHITE
+LINE_WIDTH = 5
+
+# Create a surface
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Simple Sketch")
+
+# Variables
+drawing = False
+last_pos = (0, 0)
+
+# Game loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:  # Left mouse button
+                drawing = True
+                last_pos = event.pos
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                drawing = False
+        elif event.type == pygame.MOUSEMOTION:
+            if drawing:
+                mouse_x, mouse_y = event.pos
+                pygame.draw.line(screen, BLACK, last_pos, (mouse_x, mouse_y), LINE_WIDTH)
+                last_pos = (mouse_x, mouse_y)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_c:  # Clear screen when 'c' key is pressed
+                screen.fill(BG_COLOR)
+
+    # Update screen
+    pygame.display.flip()
+
+# Quit Pygame
+pygame.quit()
